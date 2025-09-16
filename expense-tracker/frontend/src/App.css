@@ -1,0 +1,119 @@
+/* App.css */
+
+/* General body styling */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb; /* light dashboard background */
+  margin: 0;
+  padding: 0;
+  color: #111827; /* dark text */
+}
+
+/* App container */
+#root {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Main app card */
+.app-container {
+  max-width: 900px;
+  width: 100%;
+  display: grid;
+  gap: 2rem;
+}
+
+/* Form card */
+form {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Inputs and select styling */
+form input,
+form select {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+form input:focus,
+form select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Button styling */
+button {
+  background-color: #3b82f6;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: #2563eb;
+  transform: scale(1.03);
+}
+
+/* Expense list card */
+.expense-list-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Expense item */
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+/* Delete button */
+.expense-item button {
+  background-color: #f87171; /* red-400 */
+}
+
+.expense-item button:hover {
+  background-color: #ef4444; /* red-500 */
+}
+
+/* Expense chart card */
+.expense-chart-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Grid */
+@media (min-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr 1fr; /* form + chart side by side on desktop */
+  }
+}
+
+/* Mobile tweak */
+@media (max-width: 767px) {
+  .app-container {
+    grid-template-columns: 1fr;
+  }
+}
