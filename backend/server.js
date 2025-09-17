@@ -4,39 +4,56 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 const path = require("path");
 
+// Load environment variables
 dotenv.config();
+
+// Connect to MongoDB
 connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// -------------------- MIDDLEWARE -------------------- //
+// Parse JSON requests
 app.use(express.json());
 
-// Routes
-const expenseRoutes = require("./routes/expenseRoutes");
-app.use("/api/expenses", expenseRoutes);
+// CORS configuration
+// Replace with your frontend URL on Render
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+app.use(cors({
+  origin: FRONTEND_URL,
+  credentials: true,
+}));
+
+// -------------------- ROUTES -------------------- //
 app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/expenses", require("./routes/expenseRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
 
 // -------------------- DEPLOYMENT -------------------- //
 const __dirname1 = path.resolve();
 
-// Serve frontend build files in production
 if (process.env.NODE_ENV === "production") {
+  // Serve frontend build
   app.use(express.static(path.join(__dirname1, "../frontend/build")));
-  app.use((req, res) =>
-    res.sendFile(path.join(__dirname1, "../frontend/build/index.html"))
-  );
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname1, "../frontend/build/index.html"));
+  });
 } else {
   app.get("/", (req, res) => {
     res.send("API is running...");
   });
 }
 
-// -------------------- DEPLOYMENT -------------------- //
+// -------------------- ERROR HANDLING -------------------- //
+// Catch all errors
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: err.message || "Server Error" });
+});
 
-const PORT = process.env.PORT || 5000; // Use Render's port or fallback to 5000
+// -------------------- START SERVER -------------------- //
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
