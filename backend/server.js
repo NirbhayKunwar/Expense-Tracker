@@ -18,7 +18,7 @@ app.use(express.json());
 
 // CORS configuration
 // Replace with your frontend URL on Render
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://expense-backend.onrender.com";
 app.use(cors({
   origin: FRONTEND_URL,
   credentials: true,
@@ -33,12 +33,12 @@ app.use("/api/tasks", require("./routes/taskRoutes"));
 const __dirname1 = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-  // Serve frontend build
-  app.use(express.static(path.join(__dirname1, "../frontend/build")));
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname1, "../frontend/build/index.html"));
-  });
+  // Catch-all handler for React Router (Express 5 fix: no "*")
+  app.use((req, res) =>
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+  );
 } else {
   app.get("/", (req, res) => {
     res.send("API is running...");
