@@ -34,28 +34,30 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-container flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="auth-card bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Register</h2>
+    <div className="auth-container flex items-center justify-center min-h-screen px-4">
+      <div className="auth-card bg-white p-10 rounded-2xl shadow-xl w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Create Account</h2>
 
-        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        {error && (
+          <p className="text-red-500 mb-4 text-center font-medium">{error}</p>
+        )}
 
-        <form onSubmit={handleRegister} className="flex flex-col gap-4">
+        <form onSubmit={handleRegister} className="flex flex-col gap-5">
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="border border-gray-300 rounded-lg p-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border border-gray-300 rounded-xl p-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="border border-gray-300 rounded-lg p-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border border-gray-300 rounded-xl p-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <input
             type="password"
@@ -63,18 +65,21 @@ const Register = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="border border-gray-300 rounded-lg p-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border border-gray-300 rounded-xl p-4 text-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             type="submit"
-            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-300"
+            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md transition duration-300"
           >
             Register
           </button>
         </form>
 
-        <p className="text-center mt-4 text-gray-600">
-          Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login</a>
+        <p className="text-center mt-6 text-gray-600">
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-500 hover:underline font-medium">
+            Login
+          </a>
         </p>
       </div>
     </div>

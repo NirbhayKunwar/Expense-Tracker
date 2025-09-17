@@ -12,24 +12,32 @@ body {
 .auth-container {
   background-color: #ffffff;
   padding: 40px 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  width: 350px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 400px;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .auth-container h2 {
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   color: #333;
   font-size: 28px;
+  font-weight: 700;
 }
 
 .auth-container input {
   width: 100%;
-  padding: 12px 15px;
+  padding: 14px 18px;
   margin: 10px 0;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   outline: none;
   transition: 0.3s;
@@ -37,28 +45,30 @@ body {
 
 .auth-container input:focus {
   border-color: #6b73ff;
-  box-shadow: 0 0 5px #6b73ff;
+  box-shadow: 0 0 8px rgba(107, 115, 255, 0.5);
 }
 
 .auth-container button {
   width: 100%;
-  padding: 12px;
-  margin-top: 15px;
+  padding: 14px;
+  margin-top: 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #6b73ff;
   color: #fff;
   font-size: 18px;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.3s;
 }
 
 .auth-container button:hover {
   background: #000dff;
+  transform: translateY(-2px);
 }
 
 .auth-container p {
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 14px;
   color: #555;
 }
@@ -67,8 +77,26 @@ body {
   color: #6b73ff;
   text-decoration: none;
   font-weight: 500;
+  transition: 0.3s;
 }
 
 .auth-container a:hover {
   text-decoration: underline;
+  color: #000dff;
+}
+
+/* Responsive for small screens */
+@media (max-width: 420px) {
+  .auth-container {
+    padding: 30px 20px;
+  }
+
+  .auth-container h2 {
+    font-size: 24px;
+  }
+
+  .auth-container button {
+    font-size: 16px;
+    padding: 12px;
+  }
 }
