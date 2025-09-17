@@ -33,11 +33,11 @@ app.use("/api/tasks", require("./routes/taskRoutes"));
 const __dirname1 = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+  app.use(express.static(path.join(__dirname1, "../frontend/build")));
 
   // Catch-all handler for React Router (Express 5 fix: no "*")
   app.use((req, res) =>
-    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+    res.sendFile(path.resolve(__dirname1, "../frontend/build/index.html"))
   );
 } else {
   app.get("/", (req, res) => {
