@@ -4,58 +4,117 @@ import ExpenseList from "../components/ExpenseList";
 import ExpenseChart from "../components/ExpenseChart";
 import "../styles/Dashboard.css";
 
+const API_URL = process.env.REACT_APP_API_URL; // <-- Use env variable
+
 const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const token = localStorage.getItem("token");
 
+  // Fetch expenses on component mount
   useEffect(() => {
     if (!token) {
-      window.location.href = "/login"; // redirect if not logged in
+      window.location.href = "/login"; // Redirect if not logged in
       return;
     }
 
-    fetch("http://localhost:5000/api/expenses", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(res => res.json())
-      .then(data => setExpenses(data))
-      .catch(err => console.error(err));
+    const fetchExpenses = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/expenses`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message || "Failed to fetch expenses");
+        }
+
+        setExpenses(data);
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExpenses();
   }, [token]);
 
+  // Add a new expense
   const addExpense = async (expense) => {
-    const res = await fetch("http://localhost:5000/api/expenses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(expense),
-    });
-    const data = await res.json();
-    setExpenses(prev => [...prev, data]);
+    try {
+      const res = await fetch(`${API_URL}/api/expenses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(expense),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to add expense");
+      }
+
+      setExpenses((prev) => [...prev, data]);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
   };
 
+  // Delete an expense
   const deleteExpense = async (id) => {
-    await fetch(`http://localhost:5000/api/expenses/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setExpenses(prev => prev.filter(exp => exp._id !== id));
+    try {
+      const res = await fetch(`${API_URL}/api/expenses/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Failed to delete expense");
+      }
+
+      setExpenses((prev) => prev.filter((exp) => exp._id !== id));
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
   };
 
+  // Update an expense
   const updateExpense = async (id, newAmount) => {
-    const res = await fetch(`http://localhost:5000/api/expenses/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ amount: newAmount }),
-    });
-    const updated = await res.json();
-    setExpenses(prev => prev.map(exp => exp._id === id ? updated : exp));
+    try {
+      const res = await fetch(`${API_URL}/api/expenses/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ amount: newAmount }),
+      });
+
+      const updated = await res.json();
+
+      if (!res.ok) {
+        throw new Error(updated.message || "Failed to update expense");
+      }
+
+      setExpenses((prev) =>
+        prev.map((exp) => (exp._id === id ? updated : exp))
+      );
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
   };
 
+  // Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
@@ -73,16 +132,23 @@ const Dashboard = () => {
         </button>
       </div>
 
-      <ExpenseForm onAddExpense={addExpense} />
-      <ExpenseList
-        expenses={expenses}
-        onDeleteExpense={deleteExpense}
-        onUpdateExpense={updateExpense}
-      />
+      {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      <div className="mt-8">
-        <ExpenseChart expenses={expenses} />
-      </div>
+      {loading ? (
+        <p className="text-gray-600">Loading expenses...</p>
+      ) : (
+        <>
+          <ExpenseForm onAddExpense={addExpense} />
+          <ExpenseList
+            expenses={expenses}
+            onDeleteExpense={deleteExpense}
+            onUpdateExpense={updateExpense}
+          />
+          <div className="mt-8">
+            <ExpenseChart expenses={expenses} />
+          </div>
+        </>
+      )}
     </div>
   );
 };

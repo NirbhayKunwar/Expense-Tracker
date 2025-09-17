@@ -36,5 +36,8 @@ if (process.env.NODE_ENV === "production") {
 
 // -------------------- DEPLOYMENT -------------------- //
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 5000; // Use Render's port or fallback to 5000
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
