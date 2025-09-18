@@ -21,6 +21,7 @@ app.use(express.json());
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://expense-tracker-5dui.onrender.com";
 app.use(cors({
   origin: expense-tracker-gamma-silk.vercel.app,
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
 
@@ -30,7 +31,7 @@ app.use("/api/expenses", require("./routes/expenseRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
 
 // -------------------- DEPLOYMENT -------------------- //
-const __dirname1 = path.resolve();
+/* const __dirname1 = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname1, "../frontend/build")));
@@ -43,7 +44,7 @@ if (process.env.NODE_ENV === "production") {
   app.get("/", (req, res) => {
     res.send("API is running...");
   });
-}
+}*/
 
 // -------------------- ERROR HANDLING -------------------- //
 // Catch all errors
