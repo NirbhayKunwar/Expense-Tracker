@@ -18,7 +18,7 @@ app.use(express.json());
 
 // CORS configuration
 // Replace with your frontend URL on Render
-const FRONTEND_URL = process.env.FRONTEND_URL || "https://expense-backend.onrender.com";
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://expense-tracker-5dui.onrender.com";
 app.use(cors({
   origin: FRONTEND_URL,
   credentials: true,
