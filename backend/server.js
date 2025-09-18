@@ -16,10 +16,14 @@ app.use(express.json());
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "https://expense-tracker-gamma-silk.vercel.app",
+  origin: [
+    "http://localhost:3000", // local dev
+    "https://expense-tracker-gamma-silk.vercel.app" // your Vercel frontend
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
+
 
 // -------------------- ROUTES -------------------- //
 app.use("/api/users", require("./routes/userRoutes"));
