@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
+import API from "../api";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -14,22 +15,14 @@ const Register = () => {
     setError("");
 
     try {
-      const res = await fetch("http://expense-backend.onrender.com/api/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
+      const res = await API.post("/api/users/register", { name, email, password });
 
-      const data = await res.json();
-
-      if (res.ok) {
+      if (res.status === 201) {
         alert("Registration successful. Please login.");
         navigate("/login");
-      } else {
-        setError(data.message || "Registration failed");
       }
     } catch (err) {
-      setError("Server error, please try again");
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 

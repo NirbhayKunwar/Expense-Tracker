@@ -20,7 +20,7 @@ app.use(express.json());
 // Replace with your frontend URL on Render
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://expense-tracker-5dui.onrender.com";
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: expense-tracker-gamma-silk.vercel.app,
   credentials: true,
 }));
 

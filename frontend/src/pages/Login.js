@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
+import API from "../api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,24 +14,17 @@ const Login = () => {
     setError("");
 
     try {
-      const res = await fetch("http://expense-backend.onrender.com/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await API.post("/api/users/login", { email, password });
 
-      const data = await res.json();
-
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
+      if (res.status === 200) {
+        localStorage.setItem("token", res.data.token);
         navigate("/dashboard");
-      } else {
-        setError(data.message || "Login failed");
       }
     } catch (err) {
-      setError("Server error, please try again");
+      setError(err.response?.data?.message || "Login failed");
     }
   };
+
 
   return (
     <div className="auth-container flex items-center justify-center min-h-screen bg-gray-100">
