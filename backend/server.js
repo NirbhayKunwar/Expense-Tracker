@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 // CORS configuration
-app.use("/*", cors({
+app.use(cors({
   origin: [
     "http://localhost:3000", // local dev
     "https://expense-tracker-gamma-silk.vercel.app" // your Vercel frontend
