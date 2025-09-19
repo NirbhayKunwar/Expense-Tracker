@@ -14,16 +14,30 @@ const app = express();
 // -------------------- MIDDLEWARE -------------------- //
 app.use(express.json());
 
-// CORS configuration
-app.use(cors({
-  origin: [
-    "http://localhost:3000", // local dev
-    "https://expense-tracker-gamma-silk.vercel.app" // your Vercel frontend
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+// ✅ Allowed frontend origins
+const allowedOrigins = [
+  "http://localhost:3000", // Local dev
+  "https://expense-tracker-gamma-silk.vercel.app" // Vercel frontend
+];
 
+// ✅ Dynamic CORS configuration
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow tools like Insomnia/Postman
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+// ✅ Handle preflight requests properly (no "*" issue in Express 5)
+app.options("/api/*", cors());
 
 // -------------------- ROUTES -------------------- //
 app.use("/api/users", require("./routes/userRoutes"));
