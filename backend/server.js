@@ -12,17 +12,26 @@ connectDB();
 const app = express();
 
 // -------------------- CORS CONFIG -------------------- //
-const corsOptions = {
-  origin: [
-    "https://expense-tracker-gamma-silk.vercel.app", // your Vercel frontend
-    "https://expense-tracker-5.onrender.com",        // your Render frontend (if deployed there)
-    "http://localhost:3000"                          // local dev
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
-app.use(cors(corsOptions));
+const allowedOrigins = [
+  "http://localhost:3000",                          // local dev
+  "https://expense-tracker-gamma-silk.vercel.app", // Vercel frontend
+  "https://expense-tracker-5.onrender.com"         // Render frontend (if needed)
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 // -------------------- MIDDLEWARE -------------------- //
 app.use(express.json());
