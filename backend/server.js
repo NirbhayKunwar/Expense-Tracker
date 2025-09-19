@@ -14,7 +14,7 @@ const app = express();
 // -------------------- CORS CONFIG -------------------- //
 const allowedOrigins = [
   "http://localhost:3000",                          // local dev
-  "https://expense-tracker-gamma-silk.vercel.app", // Vercel frontend
+  "https://expense-tracker-black-phi.vercel.app", // Vercel frontend
   "https://expense-tracker-5.onrender.com"         // Render frontend (if needed)
 ];
 
