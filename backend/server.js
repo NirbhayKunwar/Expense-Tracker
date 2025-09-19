@@ -14,17 +14,17 @@ const app = express();
 // -------------------- MIDDLEWARE -------------------- //
 app.use(express.json());
 
-// ✅ Allowed frontend origins
+// Allowed origins
 const allowedOrigins = [
-  "http://localhost:3000", // Local dev
-  "https://expense-tracker-gamma-silk.vercel.app" // Vercel frontend
+  "http://localhost:3000", // local dev
+  "https://expense-tracker-gamma-silk.vercel.app" // deployed frontend
 ];
 
-// ✅ Dynamic CORS configuration
+// CORS configuration
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow tools like Insomnia/Postman
+      if (!origin) return callback(null, true); // allow tools like Postman/Insomnia
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       } else {
@@ -36,8 +36,8 @@ app.use(
   })
 );
 
-// ✅ Handle preflight requests properly (no "*" issue in Express 5)
-app.options("/api/*", cors());
+// ✅ Handle preflight requests (fixes Express v5 issue)
+app.options(/^\/api\/.*/, cors());
 
 // -------------------- ROUTES -------------------- //
 app.use("/api/users", require("./routes/userRoutes"));
@@ -57,7 +57,6 @@ app.use((err, req, res, next) => {
 
 // -------------------- START SERVER -------------------- //
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
