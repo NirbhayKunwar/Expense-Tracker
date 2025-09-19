@@ -11,33 +11,21 @@ connectDB();
 
 const app = express();
 
+// -------------------- CORS CONFIG -------------------- //
+const corsOptions = {
+  origin: [
+    "https://expense-tracker-gamma-silk.vercel.app", // your Vercel frontend
+    "https://expense-tracker-5.onrender.com",        // your Render frontend (if deployed there)
+    "http://localhost:3000"                          // local dev
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 // -------------------- MIDDLEWARE -------------------- //
 app.use(express.json());
-
-// Allowed origins
-const allowedOrigins = [
-  "http://localhost:3000", // local dev
-  "https://expense-tracker-gamma-silk.vercel.app" // deployed frontend
-];
-
-// CORS configuration
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow tools like Postman/Insomnia
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-
-// ✅ Handle preflight requests (fixes Express v5 issue)
-app.options(cors());
 
 // -------------------- ROUTES -------------------- //
 app.use("/api/users", require("./routes/userRoutes"));
@@ -57,6 +45,7 @@ app.use((err, req, res, next) => {
 
 // -------------------- START SERVER -------------------- //
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
