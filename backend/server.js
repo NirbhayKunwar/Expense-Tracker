@@ -37,7 +37,7 @@ app.use(
 );
 
 // ✅ Handle preflight requests (fixes Express v5 issue)
-app.options(/^\/api\/.*/, cors());
+app.options(cors());
 
 // -------------------- ROUTES -------------------- //
 app.use("/api/users", require("./routes/userRoutes"));
